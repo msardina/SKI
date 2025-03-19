@@ -31,9 +31,13 @@ class ScrollingSurface:
         self.x = x
         self.y = y
         self.img = img
-
-    def move(self):
-        self.y -= 6
+        self.speed = 6
+        
+    def move(self, keys):
+        self.y -= self.speed
+        
+        if keys[pygame.K_DOWN]:
+            self.speed += 0.20
         
         if self.y < HEIGHT * -1:
             self.x = 0
@@ -107,8 +111,8 @@ def game():
         player.draw()
         
         # move
-        back_1.move()
-        back_2.move()
+        back_1.move(pygame.key.get_pressed())
+        back_2.move(pygame.key.get_pressed())
         player.move(pygame.key.get_pressed())
         
         # update
