@@ -8,6 +8,7 @@ mixer.init()
 
 # define constants
 WIDTH, HEIGHT = 700, 800
+FRICTION = 0.9
 
 # setup time
 clock = pygame.time.Clock()
@@ -15,7 +16,9 @@ FPS = 60
 
 # download images
 background_img = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background.png")), (WIDTH, HEIGHT))
-player_img = pygame.image.load(os.path.join("assets", "playerright.png"))
+player_right_img = pygame.image.load(os.path.join("assets", "playerright.png"))
+player_left_img = pygame.image.load(os.path.join("assets", "playerleft.png"))
+player_imgs = [player_right_img, player_left_img]
 
 # setup screen
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -30,7 +33,7 @@ class ScrollingSurface:
         self.img = img
 
     def move(self):
-        self.y -= 1 
+        self.y -= 6
         
         if self.y < HEIGHT * -1:
             self.x = 0
@@ -40,39 +43,44 @@ class ScrollingSurface:
         SCREEN.blit(self.img, (self.x, self.y))
 
 class Entity:
-    def __init__(self, x, y, img):
+
+    def move(self, keys):
+        pass
+
+class Player:
+    def __init__(self, x, y, imgs):
         self.x = x
         self.y = y
         self.dx = 0
         self.dy = 0
-        self.img = img
+        self.imgs = imgs
+        self.img = self.imgs[0]
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         self.rect = self.img.get_rect()
-        
+    
     def draw(self):
         SCREEN.blit(self.img, (self.x, self.y))
     
     def move(self, keys):
-        pass
-
-class Player(Entity):
-    
-    def move(self, keys):
         
         if keys[pygame.K_RIGHT]:
-            self.dx = 1
-        
+            self.dx = 3
+            self.img = self.imgs[0]
+            
         if keys[pygame.K_LEFT]:
-            self.dx = -1
+            self.dx = -3
+            self.img = self.imgs[1]
+            
             
         self.x += self.dx
+
             
         
 # objects
 back_1 = ScrollingSurface(0, 0, background_img)
 back_2 = ScrollingSurface(0, HEIGHT, background_img)
-player = Player(WIDTH // 2, 20, player_img)
+player = Player(WIDTH // 2, 20, player_imgs)
 
 # game
 
