@@ -15,9 +15,9 @@ clock = pygame.time.Clock()
 FPS = 60
 
 # download images
-background_img = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background.png")), (WIDTH, HEIGHT))
-player_right_img = pygame.image.load(os.path.join("assets", "playerright.png"))
-player_left_img = pygame.image.load(os.path.join("assets", "playerleft.png"))
+background_img = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background", "background.png")), (WIDTH, HEIGHT))
+player_right_img = pygame.image.load(os.path.join("assets", "player",  "playerright.png"))
+player_left_img = pygame.image.load(os.path.join("assets", "player", "playerleft.png"))
 player_imgs = [player_right_img, player_left_img]
 
 # setup screen
@@ -37,7 +37,8 @@ class ScrollingSurface:
         self.y -= self.speed
         
         if keys[pygame.K_DOWN]:
-            self.speed += 0.20
+            if self.speed < 10:
+                self.speed += 0.20
         
         if self.y < HEIGHT * -1:
             self.x = 0
