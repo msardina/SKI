@@ -61,7 +61,15 @@ class Object:
         
         if self.y < HEIGHT * -1:
             self.reset()
+    
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         
+    def collide(self, otherrect):
+        
+        if pygame.Rect.colliderect(self.rect, otherrect):
+            return True
+        
+        return False
 class ScrollingSurface:
     
     def __init__(self, x, y, img):
@@ -98,7 +106,7 @@ class Player:
         self.img = self.imgs[0]
         self.width = self.img.get_width()
         self.height = self.img.get_height()
-        self.rect = self.img.get_rect()
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
     
     def draw(self):
         SCREEN.blit(self.img, (self.x, self.y))
@@ -115,8 +123,9 @@ class Player:
             
             
         self.x += self.dx
+        
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
-            
         
 # objects
 back_1 = ScrollingSurface(0, 0, background_img)
@@ -153,10 +162,14 @@ def game():
         back_2.move(pygame.key.get_pressed())
         player.move(pygame.key.get_pressed())
         
+
         # loop through all objects
         for object in objects:
             object.draw()
             object.move(back_1.speed)
+            
+            if object.collide(player.rect):
+                run = False
         
         # update
         pygame.display.update()
