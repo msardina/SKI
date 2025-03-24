@@ -18,7 +18,8 @@ FPS = 60
 background_img = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background", "background.png")), (WIDTH, HEIGHT))
 player_right_img = pygame.image.load(os.path.join("assets", "player",  "playerright.png"))
 player_left_img = pygame.image.load(os.path.join("assets", "player", "playerleft.png"))
-player_imgs = [player_right_img, player_left_img]
+player_straight_img = pygame.image.load(os.path.join("assets", "player", "playerstraight.png"))
+player_imgs = [player_right_img, player_left_img, player_straight_img]
 tree_1_img = pygame.image.load(os.path.join("assets", "objects", "tree1.png"))
 tree_2_img = pygame.image.load(os.path.join("assets", "objects", "tree2.png"))
 tree_3_img = pygame.image.load(os.path.join("assets", "objects", "tree3.png"))
@@ -100,7 +101,7 @@ class Player:
     def __init__(self, x, y, imgs):
         self.x = x
         self.y = y
-        self.dx = 0
+        self.dx = 3
         self.dy = 0
         self.imgs = imgs
         self.img = self.imgs[0]
@@ -120,6 +121,11 @@ class Player:
         if keys[pygame.K_LEFT]:
             self.dx = -3
             self.img = self.imgs[1]
+            
+        
+        if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+            self.dx = 0
+            self.img = self.imgs[2]
             
             
         self.x += self.dx
