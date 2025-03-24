@@ -105,6 +105,7 @@ class Player:
         self.dy = 0
         self.imgs = imgs
         self.state = 1
+        self.state_timer = 0
         self.img = self.imgs[0]
         self.width = self.img.get_width()
         self.height = self.img.get_height()
@@ -117,13 +118,16 @@ class Player:
         
         
         # change state number
-        if keys[pygame.K_RIGHT]:
-            if self.state < 2:
-                self.state += 1
-            
-        if keys[pygame.K_LEFT]:
-            if self.state > 0:
-                self.state -=1
+        
+        if self.state_timer > 0.50:
+            if keys[pygame.K_RIGHT]:
+                if self.state < 2:
+                    self.state += 1
+                
+            if keys[pygame.K_LEFT]:
+                if self.state > 0:
+                    self.state -=1
+            self.state_timer = 0
         
         # change image and direction
         
@@ -141,7 +145,7 @@ class Player:
             
             
         self.x += self.dx
-        
+        self.state_timer += 0.10
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
         
