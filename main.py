@@ -19,7 +19,7 @@ background_img = pygame.transform.scale(pygame.image.load(os.path.join("assets",
 player_right_img = pygame.image.load(os.path.join("assets", "player",  "playerright.png"))
 player_left_img = pygame.image.load(os.path.join("assets", "player", "playerleft.png"))
 player_straight_img = pygame.image.load(os.path.join("assets", "player", "playerstraight.png"))
-player_imgs = [player_right_img, player_left_img, player_straight_img]
+player_imgs = [player_left_img, player_straight_img, player_right_img]
 tree_1_img = pygame.image.load(os.path.join("assets", "objects", "tree1.png"))
 tree_2_img = pygame.image.load(os.path.join("assets", "objects", "tree2.png"))
 tree_3_img = pygame.image.load(os.path.join("assets", "objects", "tree3.png"))
@@ -101,9 +101,10 @@ class Player:
     def __init__(self, x, y, imgs):
         self.x = x
         self.y = y
-        self.dx = 3
+        self.dx = 0
         self.dy = 0
         self.imgs = imgs
+        self.state = 1
         self.img = self.imgs[0]
         self.width = self.img.get_width()
         self.height = self.img.get_height()
@@ -114,18 +115,29 @@ class Player:
     
     def move(self, keys):
         
+        
+        # change state number
         if keys[pygame.K_RIGHT]:
-            self.dx = 3
-            self.img = self.imgs[0]
+            if self.state < 2:
+                self.state += 1
             
         if keys[pygame.K_LEFT]:
-            self.dx = -3
-            self.img = self.imgs[1]
-            
+            if self.state > 0:
+                self.state -=1
         
-        if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+        # change image and direction
+        
+        if self.state == 0:
+            self.dx = -3
+            self.img = self.imgs[self.state]
+            
+        if self.state == 2:
+            self.dx = 3
+            self.img = self.imgs[self.state]
+            
+        if self.state == 1:
             self.dx = 0
-            self.img = self.imgs[2]
+            self.img = self.imgs[self.state]
             
             
         self.x += self.dx
