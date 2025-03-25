@@ -9,6 +9,7 @@ mixer.init()
 # define constants
 WIDTH, HEIGHT = 700, 800
 FRICTION = 0.9
+player_size = 2
 
 # setup time
 clock = pygame.time.Clock()
@@ -22,10 +23,15 @@ player_straight_img = pygame.image.load(os.path.join("assets", "player", "player
 player_imgs = [player_left_img, player_straight_img, player_right_img]
 tree_1_img = pygame.image.load(os.path.join("assets", "objects", "tree1.png"))
 tree_2_img = pygame.image.load(os.path.join("assets", "objects", "tree2.png"))
-tree_3_img = pygame.image.load(os.path.join("assets", "objects", "tree3.png"))
 hole_img = pygame.image.load(os.path.join("assets", "objects", "hole.png"))
-tree_imgs = [tree_1_img, tree_2_img, tree_3_img, hole_img]
+tree_imgs = [tree_1_img, tree_2_img, hole_img]
 
+# rezise player
+
+player_right_img = pygame.transform.scale(pygame.image.load(os.path.join("assets", "player",  "playerright.png")), (player_right_img.get_width() * player_size, player_right_img.get_width() * player_size))
+player_left_img = pygame.transform.scale(pygame.image.load(os.path.join("assets", "player",  "playerleft.png")), (player_left_img.get_width() * player_size, player_left_img.get_width() * player_size))
+player_straight_img = pygame.transform.scale(pygame.image.load(os.path.join("assets", "player",  "playerstraight.png")), (player_straight_img.get_width() * player_size, player_straight_img.get_width() * player_size))
+player_imgs = [player_left_img, player_straight_img, player_right_img]
 
 # setup screen
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
