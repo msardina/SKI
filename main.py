@@ -26,16 +26,9 @@ tree_2_img = pygame.image.load(os.path.join("assets", "objects", "tree2.png"))
 hole_img = pygame.image.load(os.path.join("assets", "objects", "hole.png"))
 tree_imgs = [tree_1_img, tree_2_img, hole_img]
 
-# rezise player
-
-player_right_img = pygame.transform.scale(pygame.image.load(os.path.join("assets", "player",  "playerright.png")), (player_right_img.get_width() * player_size, player_right_img.get_width() * player_size))
-player_left_img = pygame.transform.scale(pygame.image.load(os.path.join("assets", "player",  "playerleft.png")), (player_left_img.get_width() * player_size, player_left_img.get_width() * player_size))
-player_straight_img = pygame.transform.scale(pygame.image.load(os.path.join("assets", "player",  "playerstraight.png")), (player_straight_img.get_width() * player_size, player_straight_img.get_width() * player_size))
-player_imgs = [player_left_img, player_straight_img, player_right_img]
-
 # setup screen
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('SKI')
+pygame.display.set_caption('SKI HOP')
 
 # classes
 
