@@ -11,6 +11,12 @@ WIDTH, HEIGHT = 700, 800
 FRICTION = 0.9
 player_size = 2
 
+
+
+# setup font
+font = pygame.font.SysFont(None, 50)
+title_font = pygame.font.SysFont(None, 100)
+
 # setup time
 clock = pygame.time.Clock()
 FPS = 60
@@ -87,9 +93,6 @@ class ScrollingSurface:
             if self.speed < 15:
                 self.speed += 0.20
                 
-        if keys[pygame.K_UP]:
-            if self.speed > 5:
-                self.speed -= 0.20
                 
         if self.y < HEIGHT * -1:
             self.x = 0
@@ -114,7 +117,6 @@ class Player:
         self.mask_img = self.mask.to_surface()
         
     def draw(self):
-        
         SCREEN.blit(self.img, (self.x, self.y))
     
     def move(self, keys):
@@ -164,6 +166,8 @@ def game():
     
     # variables
     run = True
+    score = 0
+    speed_timer = 0
     
     # game loop
     while run:
@@ -176,12 +180,18 @@ def game():
                 run = False
                 pygame.quit()
                 quit()
-                
+           
+        # render text
+        
+        score_txt = title_font.render(f'{math.ceil(score)}', True, (0, 0, 0))  
+        feet_txt = font.render('feet', True, (0, 0, 0))     
+        
         # draw
         back_1.draw()
         back_2.draw()
         player.draw()
-    
+
+
         # move
         back_1.move(pygame.key.get_pressed())
         back_2.move(pygame.key.get_pressed())
@@ -195,6 +205,25 @@ def game():
             
             if object.collide(player.mask, player.x, player.y):
                 run = False
+        
+        # draw score after trees
+        SCREEN.blit(score_txt, (WIDTH // 2 - score_txt.get_width() // 2, HEIGHT - 100))
+        SCREEN.blit(feet_txt, (WIDTH // 2 - feet_txt.get_width() // 2, HEIGHT - 45))
+        
+        # change score
+        
+        score += 0.10
+        
+        # speed timer check
+        
+        if speed_timer > 300:
+            
+            if back_1.speed < 15:
+                back_1.speed += 1
+                back_2.speed += 1
+                speed_timer = 0
+            
+        speed_timer += 1
         
         # update
         pygame.display.update()
