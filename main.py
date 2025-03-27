@@ -41,13 +41,15 @@ class Object:
         self.img = self.imgs[0]
         self.width = self.img.get_width()
         self.height = self.img.get_height()
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-    
+        self.mask = pygame.mask.from_surface(self.img)
+        self.mask_img = self.mask.to_surface()
+        
     def new_size(self):
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         
     def draw(self):
+        # pygame.draw.rect(SCREEN, (0, 0, 0), self.rect)
         SCREEN.blit(self.img, (self.x, self.y))
         
     def reset(self):
@@ -62,11 +64,11 @@ class Object:
         if self.y < HEIGHT * -1:
             self.reset()
     
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.mask = pygame.mask.from_surface(self.img)
         
-    def collide(self, otherrect):
+    def collide(self, othermask, otherx, othery):
         
-        if pygame.Rect.colliderect(self.rect, otherrect):
+        if self.mask.overlap(othermask, (otherx - self.x, othery - self.y)):
             return True
         
         return False
@@ -108,9 +110,11 @@ class Player:
         self.img = self.imgs[0]
         self.width = self.img.get_width()
         self.height = self.img.get_height()
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-    
+        self.mask = pygame.mask.from_surface(self.img)
+        self.mask_img = self.mask.to_surface()
+        
     def draw(self):
+        
         SCREEN.blit(self.img, (self.x, self.y))
     
     def move(self, keys):
@@ -189,7 +193,7 @@ def game():
             object.draw()
             object.move(back_1.speed)
             
-            if object.collide(player.rect):
+            if object.collide(player.mask, player.x, player.y):
                 run = False
         
         # update
