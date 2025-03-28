@@ -162,6 +162,31 @@ player = Player(WIDTH // 2, 20, player_imgs)
 
 # game
 
+def title():
+    
+    # variables
+    title = True
+    
+    
+    # title loop
+    
+    while title:
+        
+        # loop trough all events
+        
+        for event in pygame.event.get():
+            
+            # if x button pressed then quit python
+            
+            if event.type == pygame.QUIT:
+                title = False
+                pygame.quit()
+                quit()
+        
+        # update
+        pygame.display.update()
+        clock.tick(FPS)
+        
 def game():
     
     # variables
