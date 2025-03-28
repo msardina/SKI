@@ -121,6 +121,18 @@ class Button:
             self.img = self.normalimg
             self.shouldsound = True
             
+    def is_clicked(self):
+        pos = pygame.mouse.get_pos()
+        collide = pygame.Rect.collidepoint(self.rect, pos)
+        
+        if collide:
+            
+            if pygame.mouse.get_pressed()[0] == 1:
+                return True
+            return False
+        
+        
+        
 class ScrollingSurface:
     
     def __init__(self, x, y, img):
@@ -230,12 +242,12 @@ def title():
                 # if mouse down then exit title
         
                 
-            # if mouse tapped then begin the game!
-            
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                title = False
-                click_sfx.play()
-                break
+        # if mouse tapped then begin the game!
+        
+        if play_btn.is_clicked():
+            title = False
+            click_sfx.play()
+            break
         
         # draw
         
