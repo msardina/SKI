@@ -34,10 +34,13 @@ tree_imgs = [tree_1_img, tree_2_img, hole_img]
 
 # download music
 hover_sfx = pygame.mixer.Sound(os.path.join("sfx", "hover.wav"))
+click_sfx = pygame.mixer.Sound(os.path.join("sfx", "click.wav"))
 
 # button images
 titlenormalimg = pygame.image.load(os.path.join("assets", "buttons", "titlenormal.png"))
 titlehoverimg = pygame.image.load(os.path.join("assets", "buttons", "titlehover.png"))
+playnormalimg = pygame.image.load(os.path.join("assets", "buttons", "playnormal.png"))
+playhoverimg = pygame.image.load(os.path.join("assets", "buttons", "playhover.png"))
 
 # setup screen
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -200,6 +203,7 @@ back_2 = ScrollingSurface(0, HEIGHT, background_img)
 objects = [Object(WIDTH // 2, HEIGHT, tree_imgs), Object(WIDTH // 2, HEIGHT * 1.9, tree_imgs)]
 player = Player(WIDTH // 2, 20, player_imgs)
 title_btn = Button(WIDTH // 2 - titlenormalimg.get_width() // 2, 100, titlenormalimg, titlehoverimg)
+play_btn = Button(WIDTH // 2 - playnormalimg.get_width() // 2, HEIGHT // 2, playnormalimg, playhoverimg)
 
 # game
 
@@ -223,14 +227,25 @@ def title():
                 title = False
                 pygame.quit()
                 quit()
+                # if mouse down then exit title
+        
+                
+            # if mouse tapped then begin the game!
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                title = False
+                click_sfx.play()
+                break
         
         # draw
         
         SCREEN.blit(background_img, (0, 0))
         title_btn.draw()
         title_btn.is_hover()
+        play_btn.draw()
+        play_btn.is_hover()
+        
 
-        # update
         pygame.display.update()
         clock.tick(FPS)
         
