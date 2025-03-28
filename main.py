@@ -32,6 +32,10 @@ tree_2_img = pygame.image.load(os.path.join("assets", "objects", "tree2.png"))
 hole_img = pygame.image.load(os.path.join("assets", "objects", "hole.png"))
 tree_imgs = [tree_1_img, tree_2_img, hole_img]
 
+# button images
+titlenormalimg = pygame.image.load(os.path.join("assets", "buttons", "titlenormal.png"))
+titlehoverimg = pygame.image.load(os.path.join("assets", "buttons", "titlehover.png"))
+
 # setup screen
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('SKI HOP')
@@ -78,6 +82,33 @@ class Object:
             return True
         
         return False
+    
+class Button:
+    
+    def __init__(self, x, y, normalimg, hoverimg):
+        self.x = x
+        self.y = y
+        self.normalimg = normalimg
+        self.hoverimg = hoverimg
+        self.img = self.normalimg
+        self.width = self.img.get_width()
+        self.height = self.img.get_height()
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        
+    def draw(self):
+        SCREEN.blit(self.img, (self.x, self.y))
+        
+    def is_hover(self):
+        
+        pos = pygame.mouse.get_pos()
+        collide = pygame.Rect.collidepoint(self.rect, pos)
+        
+        if collide:
+            self.img = self.hoverimg
+
+        else:
+            self.img = self.normalimg
+    
 class ScrollingSurface:
     
     def __init__(self, x, y, img):
@@ -159,6 +190,7 @@ back_1 = ScrollingSurface(0, 0, background_img)
 back_2 = ScrollingSurface(0, HEIGHT, background_img)
 objects = [Object(WIDTH // 2, HEIGHT, tree_imgs), Object(WIDTH // 2, HEIGHT * 1.9, tree_imgs)]
 player = Player(WIDTH // 2, 20, player_imgs)
+title_btn = Button(WIDTH // 2 - titlenormalimg.get_width() // 2, 100, titlenormalimg, titlehoverimg)
 
 # game
 
@@ -183,6 +215,12 @@ def title():
                 pygame.quit()
                 quit()
         
+        # draw
+        
+        SCREEN.blit(background_img, (0, 0))
+        title_btn.draw()
+        title_btn.is_hover()
+
         # update
         pygame.display.update()
         clock.tick(FPS)
@@ -257,4 +295,5 @@ def game():
 # run game
 
 if __name__ == '__main__':
+    title()
     game()
