@@ -32,6 +32,9 @@ tree_2_img = pygame.image.load(os.path.join("assets", "objects", "tree2.png"))
 hole_img = pygame.image.load(os.path.join("assets", "objects", "hole.png"))
 tree_imgs = [tree_1_img, tree_2_img, hole_img]
 
+# download music
+hover_sfx = pygame.mixer.Sound(os.path.join("sfx", "hover.wav"))
+
 # button images
 titlenormalimg = pygame.image.load(os.path.join("assets", "buttons", "titlenormal.png"))
 titlehoverimg = pygame.image.load(os.path.join("assets", "buttons", "titlehover.png"))
@@ -90,6 +93,7 @@ class Button:
         self.y = y
         self.normalimg = normalimg
         self.hoverimg = hoverimg
+        self.shouldsound = True
         self.img = self.normalimg
         self.width = self.img.get_width()
         self.height = self.img.get_height()
@@ -104,11 +108,16 @@ class Button:
         collide = pygame.Rect.collidepoint(self.rect, pos)
         
         if collide:
+            if self.shouldsound:
+                hover_sfx.play()
+                self.shouldsound = False
+                
             self.img = self.hoverimg
 
         else:
             self.img = self.normalimg
-    
+            self.shouldsound = True
+            
 class ScrollingSurface:
     
     def __init__(self, x, y, img):
