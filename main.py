@@ -32,6 +32,7 @@ tree_1_img = pygame.image.load(os.path.join("assets", "objects", "tree1.png"))
 tree_2_img = pygame.image.load(os.path.join("assets", "objects", "tree2.png"))
 hole_img = pygame.image.load(os.path.join("assets", "objects", "hole.png"))
 tree_imgs = [tree_1_img, tree_2_img, hole_img]
+red_flag_img = pygame.image.load(os.path.join("assets", "collectables", "redflag.png"))
 
 # download music
 hover_sfx = pygame.mixer.Sound(os.path.join("sfx", "hover.wav"))
@@ -224,7 +225,6 @@ player = Player(WIDTH // 2, 20, player_imgs)
 title_btn = Button(WIDTH // 2 - titlenormalimg.get_width() // 2, 100, titlenormalimg, titlehoverimg)
 play_btn = Button(WIDTH // 2 - playnormalimg.get_width() // 2, HEIGHT // 2, playnormalimg, playhoverimg)
 
-
 # game
 
 def title_def():
@@ -292,7 +292,7 @@ def game():
     back_2 = ScrollingSurface(0, HEIGHT, background_img)
     objects = [Object(WIDTH // 2, HEIGHT, tree_imgs), Object(WIDTH // 2, HEIGHT * 1.9, tree_imgs)]
     player = Player(WIDTH // 2, 20, player_imgs)
-    
+
     # reset and init everything
     back_1.__init__(0, 0, background_img)
     back_2.__init__(0, HEIGHT, background_img)
@@ -325,13 +325,12 @@ def game():
         back_1.draw()
         back_2.draw()
         player.draw()
-
-
+        
         # move
         back_1.move(pygame.key.get_pressed())
         back_2.move(pygame.key.get_pressed())
         player.move(pygame.key.get_pressed())
-        
+
 
         # loop through all objects
         for object in objects:
