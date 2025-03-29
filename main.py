@@ -2,6 +2,7 @@ import pygame
 import math
 import random
 import os
+import time
 from pygame import mixer
 pygame.init()
 mixer.init()
@@ -35,6 +36,10 @@ tree_imgs = [tree_1_img, tree_2_img, hole_img]
 # download music
 hover_sfx = pygame.mixer.Sound(os.path.join("sfx", "hover.wav"))
 click_sfx = pygame.mixer.Sound(os.path.join("sfx", "click.wav"))
+hit_sfx = pygame.mixer.Sound(os.path.join("sfx", "hit.wav"))
+ski_sfx = pygame.mixer.Sound(os.path.join("sfx", "ski.wav"))
+slowdown_sfx = pygame.mixer.Sound(os.path.join("sfx", "slowdown.wav"))
+speed_sfx = pygame.mixer.Sound(os.path.join("sfx", "speed.wav"))
 
 # button images
 titlenormalimg = pygame.image.load(os.path.join("assets", "buttons", "titlenormal.png"))
@@ -239,8 +244,7 @@ def title():
                 title = False
                 pygame.quit()
                 quit()
-                # if mouse down then exit title
-        
+
                 
         # if mouse tapped then begin the game!
         
@@ -267,6 +271,8 @@ def game():
     run = True
     score = 0
     speed_timer = 0
+    hit = False
+    hit_sound = False
     
     # game loop
     while run:
@@ -303,7 +309,14 @@ def game():
             object.move(back_1.speed)
             
             if object.collide(player.mask, player.x, player.y):
-                run = False
+                hit = True
+                
+                if hit_sound == False:
+                    hit_sfx.play()
+                    slowdown_sfx.play()
+                    hit_sound = True
+                    objects.remove(object)
+                
         
         # draw score after trees
         SCREEN.blit(score_txt, (WIDTH // 2 - score_txt.get_width() // 2, HEIGHT - 100))
@@ -320,10 +333,25 @@ def game():
             if back_1.speed < 15:
                 back_1.speed += 1
                 back_2.speed += 1
+                speed_sfx.play()
                 speed_timer = 0
             
         speed_timer += 1
         
+        # if hit then slowly stop game
+        
+        if hit:
+            if back_1.speed > 0:
+                back_1.speed -= 0.05
+                back_2.speed -= 0.05
+                
+            if back_1.speed < 1:
+                back_1.speed = 0
+                back_2.speed = 0
+                time.sleep(1)
+                run = False
+            
+            
         # update
         pygame.display.update()
         clock.tick(FPS)
