@@ -40,6 +40,7 @@ hit_sfx = pygame.mixer.Sound(os.path.join("sfx", "hit.wav"))
 ski_sfx = pygame.mixer.Sound(os.path.join("sfx", "ski.wav"))
 slowdown_sfx = pygame.mixer.Sound(os.path.join("sfx", "slowdown.wav"))
 speed_sfx = pygame.mixer.Sound(os.path.join("sfx", "speed.wav"))
+skiing_sfx = pygame.mixer.Sound(os.path.join("sfx", "ski.wav"))
 
 # button images
 titlenormalimg = pygame.image.load(os.path.join("assets", "buttons", "titlenormal.png"))
@@ -229,6 +230,9 @@ def title():
     # variables
     title = True
     
+    # reset and init backgrounds
+    back_1.__init__(0, 0, background_img)
+    back_2.__init__(0, HEIGHT, background_img)
     
     # title loop
     
@@ -274,6 +278,13 @@ def game():
     hit = False
     hit_sound = False
     
+    # reset and init backgrounds
+    back_1.__init__(0, 0, background_img)
+    back_2.__init__(0, HEIGHT, background_img)
+    
+    # music
+    skiing_sfx.play(-1)
+    
     # game loop
     while run:
         
@@ -314,6 +325,7 @@ def game():
                 if hit_sound == False:
                     hit_sfx.play()
                     slowdown_sfx.play()
+                    skiing_sfx.stop()
                     hit_sound = True
                     objects.remove(object)
                 
@@ -342,8 +354,8 @@ def game():
         
         if hit:
             if back_1.speed > 0:
-                back_1.speed -= 0.05
-                back_2.speed -= 0.05
+                back_1.speed -= 0.07
+                back_2.speed -= 0.07
                 
             if back_1.speed < 1:
                 back_1.speed = 0
@@ -359,5 +371,7 @@ def game():
 # run game
 
 if __name__ == '__main__':
-    title()
-    game()
+    
+    while True:
+        title()
+        game()
