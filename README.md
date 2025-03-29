@@ -1,25 +1,31 @@
 # SKI HOP
 
-This game was created as a mini-project by msardina.
+This game was created as a mini-project by `msardina`.
 Ski hop is a fun simple game about a little cute bunny going down a fun mountain in Niseko (Japan).
 Have fun and enjoy! :D
+
+- Assume release date: March 31 2025
+- Game Designer: Marcos Sardina (`msardina`)
+- Helper: Sebastian Sardina (`ssardina`)
+- Genre: Quick-Paced Adventure
+- Start Date: March 2 2025
+- Coding Language: 100% Python
 
 ## Story
 
 Tsuki the rabbit was found by some hikers in a forest. He got taken away from his family and with the hikers as a pet. At first, Tsuki has no idea what to do. Until he found some skiis the hikers had left at the camp site. He took them and began to ski away.
 Tsuki is not very good at skiing so YOU have to help him get down the mountain and back to the forest. Good luck!
 
+
 ## Instruction
 
-If you do not have python then open a terminal and write
+You need to have Python and Pygame package.
 
-- pip install python
-- sudo apt-get install idle pygame
+Now clone this github repository and run the following command:
 
-Now clone this github repository and open the file on the terminal.
-Once inside the SKI file type
-
-- python main.py
+```shell
+$ python main.py
+```
 
 You are now playing the game!
 
@@ -31,15 +37,22 @@ Press down to speed up but careful! Once you speed up you can't slow down.
 The game will slowly become faster and faster.
 Dodge trees and holes.
 
+If you find any glitches or problems please report an issue.
+
+
+## Screenshots
+
+![sap1](snapshots/skihopthumbnail.png)
+![sap2](snaphshots/titlescreen.png)
+![sap3](snaphshots/playing.png)
 
 ## Credits
 
-- Code by Marcos Sardina (msardina)
-- Art by Marcos Sardina (msardina)
-- Sound effects from [praplane ()](http://soundeffect-lab.info/)
-- Title music from Tobu and Fat Rat
+- Code and art by Marcos Sardina (`msardina`)
+- Sound effects from [soundeffectlab](http://soundeffect-lab.info/)
+- Title music from [Tobu and Fat Rat - Jackpot](https://www.youtube.com/watch?v=kL8CyVqzmkc)
   
-## End
 
-If you find any glitches or problems please report an issue.
+
+
 
