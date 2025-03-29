@@ -41,6 +41,7 @@ ski_sfx = pygame.mixer.Sound(os.path.join("sfx", "ski.wav"))
 slowdown_sfx = pygame.mixer.Sound(os.path.join("sfx", "slowdown.wav"))
 speed_sfx = pygame.mixer.Sound(os.path.join("sfx", "speed.wav"))
 skiing_sfx = pygame.mixer.Sound(os.path.join("sfx", "ski.wav"))
+title_sfx = pygame.mixer.Sound(os.path.join("sfx", "title.wav"))
 
 # button images
 titlenormalimg = pygame.image.load(os.path.join("assets", "buttons", "titlenormal.png"))
@@ -223,17 +224,21 @@ player = Player(WIDTH // 2, 20, player_imgs)
 title_btn = Button(WIDTH // 2 - titlenormalimg.get_width() // 2, 100, titlenormalimg, titlehoverimg)
 play_btn = Button(WIDTH // 2 - playnormalimg.get_width() // 2, HEIGHT // 2, playnormalimg, playhoverimg)
 
+
 # game
 
-def title():
+def title_def():
     
     # variables
     title = True
+
+    # title music
+    title_sfx.play(-1)
     
-    # reset and init backgrounds
-    back_1.__init__(0, 0, background_img)
-    back_2.__init__(0, HEIGHT, background_img)
-    
+    # objects
+    title_btn = Button(WIDTH // 2 - titlenormalimg.get_width() // 2, 100, titlenormalimg, titlehoverimg)
+    play_btn = Button(WIDTH // 2 - playnormalimg.get_width() // 2, HEIGHT // 2, playnormalimg, playhoverimg)
+
     # title loop
     
     while title:
@@ -249,12 +254,14 @@ def title():
                 pygame.quit()
                 quit()
 
-                
+        
         # if mouse tapped then begin the game!
         
         if play_btn.is_clicked():
             title = False
+            title_sfx.stop()
             click_sfx.play()
+            
             break
         
         # draw
@@ -264,7 +271,6 @@ def title():
         title_btn.is_hover()
         play_btn.draw()
         play_btn.is_hover()
-        
 
         pygame.display.update()
         clock.tick(FPS)
@@ -278,9 +284,22 @@ def game():
     hit = False
     hit_sound = False
     
-    # reset and init backgrounds
+    # highscore
+    highscore = 0
+
+    # objects
+    back_1 = ScrollingSurface(0, 0, background_img)
+    back_2 = ScrollingSurface(0, HEIGHT, background_img)
+    objects = [Object(WIDTH // 2, HEIGHT, tree_imgs), Object(WIDTH // 2, HEIGHT * 1.9, tree_imgs)]
+    player = Player(WIDTH // 2, 20, player_imgs)
+    
+    # reset and init everything
     back_1.__init__(0, 0, background_img)
     back_2.__init__(0, HEIGHT, background_img)
+    player.__init__(WIDTH // 2, 20, player_imgs)
+    
+    objects[0].y = HEIGHT
+    objects[1].y = HEIGHT * 1.9
     
     # music
     skiing_sfx.play(-1)
@@ -328,7 +347,7 @@ def game():
                     skiing_sfx.stop()
                     hit_sound = True
                     objects.remove(object)
-                
+
         
         # draw score after trees
         SCREEN.blit(score_txt, (WIDTH // 2 - score_txt.get_width() // 2, HEIGHT - 100))
@@ -373,5 +392,6 @@ def game():
 if __name__ == '__main__':
     
     while True:
-        title()
+        title_def()
         game()
+        
