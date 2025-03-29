@@ -42,10 +42,15 @@ If you find any glitches or problems please report an issue.
 
 ## Screenshots
 
-![sap1](snapshots/skihopthumbnail.png)
-![sap2](snaphshots/titlescreen.png)
-![sap3](snaphshots/playing.png)
+Snapshot 1:
+- ![image1](assets/snapshots/skihopthumbnail.png)
 
+Snapshot 2:
+- ![image2](assets/snapshots/titlescreen.png)
+
+Snapshot 3:
+- ![image3](assets/snapshots/playing.png)
+  
 ## Credits
 
 - Code and art by Marcos Sardina (`msardina`)
