@@ -11,12 +11,12 @@ mixer.init()
 WIDTH, HEIGHT = 700, 800
 FRICTION = 0.9
 player_size = 2
-
-
+AVALANCHE_SCORE = 300
 
 # setup font
 font = pygame.font.SysFont(None, 50)
 title_font = pygame.font.SysFont(None, 100)
+medium_font = pygame.font.SysFont(None, 75)
 
 # setup time
 clock = pygame.time.Clock()
@@ -33,6 +33,7 @@ tree_2_img = pygame.image.load(os.path.join("assets", "objects", "tree2.png"))
 hole_img = pygame.image.load(os.path.join("assets", "objects", "hole.png"))
 tree_imgs = [tree_1_img, tree_2_img, hole_img]
 red_flag_img = pygame.image.load(os.path.join("assets", "collectables", "redflag.png"))
+avalanche_img_1 = pygame.image.load(os.path.join("assets", "boss", "avalanche.png"))
 
 # download music
 hover_sfx = pygame.mixer.Sound(os.path.join("sfx", "hover.wav"))
@@ -96,7 +97,24 @@ class Object:
             return True
         
         return False
+
+class Avalanche:
     
+    def __init__(self, x, y, img):
+        self.x = x
+        self.y = y
+        self.img = img
+        self.width = self.img.get_width()
+        self.height = self.img.get_height()
+        self.img = pygame.transform.scale(self.img, (WIDTH, 250))
+
+    def draw(self):
+
+        SCREEN.blit(self.img, (self.x, self.y))
+        
+    def animate(self, timer):
+        self.y = self.y + math.sin(timer) * 0.40
+        
 class Button:
     
     def __init__(self, x, y, normalimg, hoverimg):
@@ -220,14 +238,6 @@ class Player:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
         
-# objects
-back_1 = ScrollingSurface(0, 0, background_img)
-back_2 = ScrollingSurface(0, HEIGHT, background_img)
-objects = [Object(WIDTH // 2, HEIGHT, tree_imgs), Object(WIDTH // 2, HEIGHT * 1.9, tree_imgs)]
-player = Player(WIDTH // 2, 20, player_imgs)
-title_btn = Button(WIDTH // 2 - titlenormalimg.get_width() // 2, 100, titlenormalimg, titlehoverimg)
-play_btn = Button(WIDTH // 2 - playnormalimg.get_width() // 2, HEIGHT // 2, playnormalimg, playhoverimg)
-
 # game
 
 def title_def():
@@ -286,6 +296,7 @@ def game():
     speed_timer = 0
     hit = False
     hit_sound = False
+    timer = 0
     
     # highscore
     highscore = 0
@@ -295,7 +306,8 @@ def game():
     back_2 = ScrollingSurface(0, HEIGHT, background_img)
     objects = [Object(WIDTH // 2, HEIGHT, tree_imgs), Object(WIDTH // 2, HEIGHT * 1.9, tree_imgs)]
     player = Player(WIDTH // 2, 20, player_imgs)
-
+    avalanche = Avalanche(0, avalanche_img_1.get_height() * -1, avalanche_img_1)
+    
     # reset and init everything
     back_1.__init__(0, 0, background_img)
     back_2.__init__(0, HEIGHT, background_img)
@@ -323,17 +335,11 @@ def game():
         
         score_txt = title_font.render(f'{math.ceil(score)}', True, (0, 0, 0))  
         feet_txt = font.render('feet', True, (0, 0, 0))     
-        
+
+
         # draw
         back_1.draw()
         back_2.draw()
-        player.draw()
-        
-        # move
-        back_1.move(pygame.key.get_pressed())
-        back_2.move(pygame.key.get_pressed())
-        player.move(pygame.key.get_pressed())
-
 
         # loop through all objects
         for object in objects:
@@ -350,7 +356,25 @@ def game():
                     hit_sound = True
                     objects.remove(object)
 
+        # draw avalanche if score over 300
         
+        if score > AVALANCHE_SCORE:
+            avalanche.draw()
+            avalanche.animate(timer)
+            
+        if score > AVALANCHE_SCORE and score < AVALANCHE_SCORE + 10:
+            avalanche_txt = medium_font.render('AVALANCHE!', True, (0, 0, 0))
+            SCREEN.blit(avalanche_txt, (WIDTH // 2 - avalanche_txt.get_width() // 2, HEIGHT // 2 - avalanche_txt.get_height() // 2))
+        
+        # draw player
+        player.draw()
+        
+        # move
+        back_1.move(pygame.key.get_pressed())
+        back_2.move(pygame.key.get_pressed())
+        player.move(pygame.key.get_pressed())
+
+
         # draw score after trees
         SCREEN.blit(score_txt, (WIDTH // 2 - score_txt.get_width() // 2, HEIGHT - 100))
         SCREEN.blit(feet_txt, (WIDTH // 2 - feet_txt.get_width() // 2, HEIGHT - 45))
@@ -384,7 +408,9 @@ def game():
                 time.sleep(1)
                 run = False
             
-            
+        # update timer
+        timer += 0.016
+        
         # update
         pygame.display.update()
         clock.tick(FPS)
