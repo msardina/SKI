@@ -200,19 +200,22 @@ class Player:
         # change image and direction
         
         if self.state == 0:
-            self.dx = -3
+            
+            if self.dx > -3:
+                self.dx -= 0.50
             self.img = self.imgs[self.state]
             
         if self.state == 2:
-            self.dx = 3
+            if self.dx < 3:
+                self.dx += 0.50
             self.img = self.imgs[self.state]
             
         if self.state == 1:
-            self.dx = 0
             self.img = self.imgs[self.state]
             
             
         self.x += self.dx
+        self.dx = self.dx * 0.9
         self.state_timer += 0.10
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
